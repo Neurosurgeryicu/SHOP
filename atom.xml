@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://neurosurgeryicu.github.io/SHOP</id>
+    <id>https://neurosurgeryicu.vercel.app</id>
     <title>NEUROSURGERY.ICU</title>
-    <updated>2021-12-15T13:08:10.127Z</updated>
+    <updated>2021-12-15T13:09:21.970Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://neurosurgeryicu.github.io/SHOP"/>
-    <link rel="self" href="https://neurosurgeryicu.github.io/SHOP/atom.xml"/>
+    <link rel="alternate" href="https://neurosurgeryicu.vercel.app"/>
+    <link rel="self" href="https://neurosurgeryicu.vercel.app/atom.xml"/>
     <subtitle>谷神不死，是谓玄牝。玄牝之门，是谓天地根，绵绵若存，用之不勤。</subtitle>
-    <logo>https://neurosurgeryicu.github.io/SHOP/images/avatar.png</logo>
-    <icon>https://neurosurgeryicu.github.io/SHOP/favicon.ico</icon>
+    <logo>https://neurosurgeryicu.vercel.app/images/avatar.png</logo>
+    <icon>https://neurosurgeryicu.vercel.app/favicon.ico</icon>
     <rights>All rights reserved 2021, NEUROSURGERY.ICU</rights>
     <entry>
         <title type="html"><![CDATA[SLICER/VTK/ITK医学编程开发]]></title>
-        <id>https://neurosurgeryicu.github.io/SHOP/slicervtkitk-yi-xue-bian-cheng-kai-fa/</id>
-        <link href="https://neurosurgeryicu.github.io/SHOP/slicervtkitk-yi-xue-bian-cheng-kai-fa/">
+        <id>https://neurosurgeryicu.vercel.app/slicervtkitk-yi-xue-bian-cheng-kai-fa/</id>
+        <link href="https://neurosurgeryicu.vercel.app/slicervtkitk-yi-xue-bian-cheng-kai-fa/">
         </link>
         <updated>2021-12-15T12:53:56.000Z</updated>
     </entry>
