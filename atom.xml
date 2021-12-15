@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://neurosurgeryicu.github.io/SHOP</id>
     <title>NEUROSURGERY.ICU</title>
-    <updated>2021-12-15T12:45:01.671Z</updated>
+    <updated>2021-12-15T13:00:24.706Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://neurosurgeryicu.github.io/SHOP"/>
     <link rel="self" href="https://neurosurgeryicu.github.io/SHOP/atom.xml"/>
@@ -11,16 +11,14 @@
     <icon>https://neurosurgeryicu.github.io/SHOP/favicon.ico</icon>
     <rights>All rights reserved 2021, NEUROSURGERY.ICU</rights>
     <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://neurosurgeryicu.github.io/SHOP/hello-gridea/</id>
-        <link href="https://neurosurgeryicu.github.io/SHOP/hello-gridea/">
+        <title type="html"><![CDATA[SLICER/VTK/ITK医学编程开发]]></title>
+        <id>https://neurosurgeryicu.github.io/SHOP/slicervtkitk-yi-xue-bian-cheng-kai-fa/</id>
+        <link href="https://neurosurgeryicu.github.io/SHOP/slicervtkitk-yi-xue-bian-cheng-kai-fa/">
         </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+        <updated>2021-12-15T12:53:56.000Z</updated>
+        <summary type="html"><![CDATA[<p>VTK和ITK在医学影像数据的处理中已经发展多年，而且被广泛用于商业软件的编写。目前国内的医学软件发展较为成熟，但仍存在一些专业性不足的情况，为进一步提供医学软件的临床定制服务，特开设此门课程。</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+        <content type="html"><![CDATA[<p>VTK和ITK在医学影像数据的处理中已经发展多年，而且被广泛用于商业软件的编写。目前国内的医学软件发展较为成熟，但仍存在一些专业性不足的情况，为进一步提供医学软件的临床定制服务，特开设此门课程。</p>
 ]]></content>
     </entry>
 </feed>
