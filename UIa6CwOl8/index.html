@@ -154,8 +154,8 @@
             <h2 class="fh5co-article-title animate-box">全自动脊柱椎体分割算法和软件</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
                 <li>2021-12-16</li>
-                <li>110字</li>
-                <li>1 min read</li>
+                <li>470字</li>
+                <li>3 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
@@ -170,6 +170,76 @@ WGET:<br>
 <p>(VerSe'20) https://s3.bonescreen.de/public/VerSe-complete/dataset-verse20training.zip</p>
 <p>(VerSe'20) https://s3.bonescreen.de/public/VerSe-complete/dataset-verse20validation.zip</p>
 <p>(VerSe'20) https://s3.bonescreen.de/public/VerSe-complete/dataset-verse20test.zip</p>
+<p>包含需要的代码为自动修补漏洞：<br>
+segmentationNode = slicer.mrmlScene.GetFirstNodeByClass('vtkMRMLSegmentationNode')</p>
+<h1 id="set-value-to-the-size-of-the-larges-cracks-in-the-segment-surfaces">set value to the size of the larges cracks in the segment surfaces</h1>
+<p>maximumHoleSizeMm = 2.0</p>
+<p>############<br>
+masterVolumeNode = segmentationNode.GetNodeReference(segmentationNode.GetReferenceImageGeometryReferenceRole())</p>
+<h1 id="create-segment-editor-to-get-access-to-effects">Create segment editor to get access to effects</h1>
+<p>segmentEditorWidget = slicer.qMRMLSegmentEditorWidget()</p>
+<h1 id="to-show-segment-editor-widget-useful-for-debugging">To show segment editor widget (useful for debugging):</h1>
+<h1 id="segmenteditorwidgetshow">segmentEditorWidget.show()</h1>
+<p>segmentEditorWidget.setMRMLScene(slicer.mrmlScene)<br>
+segmentEditorNode = slicer.vtkMRMLSegmentEditorNode()<br>
+slicer.mrmlScene.AddNode(segmentEditorNode)<br>
+segmentEditorWidget.setMRMLSegmentEditorNode(segmentEditorNode)<br>
+segmentEditorWidget.setSegmentationNode(segmentationNode)<br>
+segmentEditorWidget.setMasterVolumeNode(masterVolumeNode)</p>
+<h1 id="visible-segments-will-be-processed">Visible segments will be processed</h1>
+<p>inputSegmentIDs = vtk.vtkStringArray()<br>
+segmentationNode.GetDisplayNode().GetVisibleSegmentIDs(inputSegmentIDs)</p>
+<h1 id="create-a-segment-that-will-contain-all-vertebrae">Create a segment that will contain all vertebrae</h1>
+<p>allVertebraeSegmentId = segmentationNode.GetSegmentation().AddEmptySegment()<br>
+segmentEditorNode.SetOverwriteMode(slicer.vtkMRMLSegmentEditorNode.OverwriteNone)<br>
+segmentEditorNode.SetMaskMode(slicer.vtkMRMLSegmentEditorNode.PaintAllowedEverywhere)</p>
+<h1 id="fill-surface-cracks-in-each-segment-and-add-to-allvertebraesegment">Fill surface cracks in each segment and add to allVertebraeSegment</h1>
+<p>for index in range(inputSegmentIDs.GetNumberOfValues()):<br>
+segmentID = inputSegmentIDs.GetValue(index)<br>
+segmentEditorWidget.setCurrentSegmentID(segmentID)</p>
+<h1 id="grow-the-segment-to-fill-in-surface-cracks">Grow the segment to fill in surface cracks</h1>
+<p>segmentEditorWidget.setActiveEffectByName(&quot;Margin&quot;)<br>
+effect = segmentEditorWidget.activeEffect()<br>
+effect.setParameter(&quot;MarginSizeMm&quot;,str(maximumHoleSizeMm))<br>
+effect.self().onApply()</p>
+<h1 id="invert-the-segment">Invert the segment</h1>
+<p>segmentEditorWidget.setActiveEffectByName(&quot;Logical operators&quot;)<br>
+effect = segmentEditorWidget.activeEffect()<br>
+effect.setParameter(&quot;Operation&quot;, &quot;INVERT&quot;)<br>
+effect.self().onApply()</p>
+<h1 id="remove-islands-in-inverted-segment-these-are-the-holes-inside-the-segment">Remove islands in inverted segment (these are the holes inside the segment)</h1>
+<p>segmentEditorWidget.setActiveEffectByName(&quot;Islands&quot;)<br>
+effect = segmentEditorWidget.activeEffect()<br>
+effect.setParameter(&quot;Operation&quot;, &quot;KEEP_LARGEST_ISLAND&quot;)<br>
+effect.self().onApply()</p>
+<h1 id="grow-the-inverted-segment-by-the-same-margin-as-before-to-restore-the-original-size">Grow the inverted segment by the same margin as before to restore the original size</h1>
+<p>segmentEditorWidget.setActiveEffectByName(&quot;Margin&quot;)<br>
+effect = segmentEditorWidget.activeEffect()<br>
+effect.self().onApply()</p>
+<h1 id="invert-the-inverted-segment-it-will-contain-all-the-segment-without-the-holes">Invert the inverted segment (it will contain all the segment without the holes)</h1>
+<p>segmentEditorWidget.setActiveEffectByName(&quot;Logical operators&quot;)<br>
+effect = segmentEditorWidget.activeEffect()<br>
+effect.setParameter(&quot;Operation&quot;, &quot;INVERT&quot;)<br>
+effect.self().onApply()</p>
+<h1 id="add-it-to-the-allvertebraesegment">Add it to the allVertebraeSegment</h1>
+<p>segmentEditorWidget.setCurrentSegmentID(allVertebraeSegmentId)<br>
+segmentEditorWidget.setActiveEffectByName(&quot;Logical operators&quot;)<br>
+effect = segmentEditorWidget.activeEffect()<br>
+effect.setParameter(&quot;Operation&quot;, &quot;UNION&quot;)<br>
+effect.setParameter(&quot;ModifierSegmentID&quot;, segmentID)<br>
+effect.self().onApply()</p>
+<h1 id="grow-from-seeds-restricting-growth-to-allvertebrae">Grow from seeds, restricting growth to allVertebrae</h1>
+<p>segmentationNode.GetDisplayNode().SetSegmentVisibility(allVertebraeSegmentId, False)<br>
+segmentEditorNode.SetMaskSegmentID(allVertebraeSegmentId)<br>
+segmentEditorNode.SetMaskMode(slicer.vtkMRMLSegmentEditorNode.PaintAllowedInsideSingleSegment)<br>
+segmentEditorWidget.setActiveEffectByName(&quot;Grow from seeds&quot;)<br>
+effect = segmentEditorWidget.activeEffect()<br>
+effect.self().onPreview()<br>
+effect.self().onApply()</p>
+<h1 id="remove-the-mask-segment">Remove the mask segment</h1>
+<p>segmentationNode.RemoveSegment(allVertebraeSegmentId)<br>
+slicer.mrmlScene.RemoveNode(segmentEditorNode)<br>
+del segmentEditorWidget</p>
  </p>
                     </div>
                 </div>
@@ -206,11 +276,33 @@ WGET:<br>
     <!-- 返回顶部 -->
     <div class="back-to-top">
     
+        <a href="#!" id="tool-toc" class="hidden-xs hidden-sm">
+            <i class="fa fa-map"></i>
+        </a>
+        <br>
+    
     <a href="#top" class="hidden-xs hidden-sm"><i class="fa fa-paper-plane"></i></a>
 </div>
 
 <div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
-    
+    <ul class="markdownIt-TOC">
+<li><a href="#set-value-to-the-size-of-the-larges-cracks-in-the-segment-surfaces">set value to the size of the larges cracks in the segment surfaces</a></li>
+<li><a href="#create-segment-editor-to-get-access-to-effects">Create segment editor to get access to effects</a></li>
+<li><a href="#to-show-segment-editor-widget-useful-for-debugging">To show segment editor widget (useful for debugging):</a></li>
+<li><a href="#segmenteditorwidgetshow">segmentEditorWidget.show()</a></li>
+<li><a href="#visible-segments-will-be-processed">Visible segments will be processed</a></li>
+<li><a href="#create-a-segment-that-will-contain-all-vertebrae">Create a segment that will contain all vertebrae</a></li>
+<li><a href="#fill-surface-cracks-in-each-segment-and-add-to-allvertebraesegment">Fill surface cracks in each segment and add to allVertebraeSegment</a></li>
+<li><a href="#grow-the-segment-to-fill-in-surface-cracks">Grow the segment to fill in surface cracks</a></li>
+<li><a href="#invert-the-segment">Invert the segment</a></li>
+<li><a href="#remove-islands-in-inverted-segment-these-are-the-holes-inside-the-segment">Remove islands in inverted segment (these are the holes inside the segment)</a></li>
+<li><a href="#grow-the-inverted-segment-by-the-same-margin-as-before-to-restore-the-original-size">Grow the inverted segment by the same margin as before to restore the original size</a></li>
+<li><a href="#invert-the-inverted-segment-it-will-contain-all-the-segment-without-the-holes">Invert the inverted segment (it will contain all the segment without the holes)</a></li>
+<li><a href="#add-it-to-the-allvertebraesegment">Add it to the allVertebraeSegment</a></li>
+<li><a href="#grow-from-seeds-restricting-growth-to-allvertebrae">Grow from seeds, restricting growth to allVertebrae</a></li>
+<li><a href="#remove-the-mask-segment">Remove the mask segment</a></li>
+</ul>
+
 </div>
 
 
